@@ -14,7 +14,7 @@ Stack:
 
 ## Architecture
 
-![Architecture Diagram](document/archi_app.png)
+![Architecture Diagram](../document/archi_app.png)
 
 ### Containers
 
