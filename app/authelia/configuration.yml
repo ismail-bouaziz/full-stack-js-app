@@ -1,0 +1,32 @@
+server:
+  address: tcp://0.0.0.0:9091
+
+log:
+  level: info
+
+theme: dark
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: vm-app.app.local
+      policy: one_factor
+
+session:
+  name: authelia_session
+  secret: supersecret_session_key_change_me
+  expiration: 1h
+  inactivity: 5m
+  domain: vm-app.app.local
+
+storage:
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt

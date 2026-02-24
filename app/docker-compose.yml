@@ -21,6 +21,7 @@ services:
     depends_on:
       - api
       - ui
+      - authelia
     restart: always
     networks:
       - frontend
@@ -30,6 +31,14 @@ services:
       context: ./nginx
     ports:
       - "80:80"
+
+  authelia:
+    image: authelia/authelia
+    networks:
+      - app_frontend
+    volumes:
+      - ./authelia:/config
+    restart: unless-stopped
 
   api:
     networks:

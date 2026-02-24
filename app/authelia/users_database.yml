@@ -1,0 +1,7 @@
+users:
+  admin:
+    displayname: "Administrator"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$Wm9COWJQYzV3cWZVdA$Yz8mY8WwR9m6Y9k2vHkXz8F8w+oF8Cq7m3dQ0m1uJ9Y"
+    email: admin@app.local
+    groups:
+      - admins
