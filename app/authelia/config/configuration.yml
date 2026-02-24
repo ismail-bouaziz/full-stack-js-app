@@ -29,7 +29,6 @@ access_control:
     # Rules applied to everyone
     - domain:
         - "auth.vm-app.app.local"
-        - "some-app-with-api.yourdomain.com"
       policy: bypass
     - domain: 
         - "vm-app.app.local"
@@ -43,7 +42,7 @@ session:
   domain: vm-app.app.local
 
   redis:
-    host: app-redis-1
+    host: redis
     port: 6379
 
 regulation:
