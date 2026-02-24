@@ -54,6 +54,7 @@ regulation:
 theme: dark   # options: dark, light
 
 storage:
+  encryption_key: "UNE_CLE_SUPER_LONGUE_MIN_20_CARACTERES"
   local:
     path: /config/db.sqlite3
     
