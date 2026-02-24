@@ -1,0 +1,11 @@
+###############################################################
+#                         Users Database                      #
+###############################################################
+users:
+  john:
+    displayname: "ismail bouaziz"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$VJP76xWWAIX6t0ac6aRGcw$ntxWwGDu6qOyGwi0rDrF5xNd36fISzKm3JL8P1IgOdI"   #hash using docker run authelia/authelia:latest YOURNAME hash-password SOMEPASSWORD
+    email: ismailboaziz@gmail.com
+    groups:
+      - admins
+      - dev

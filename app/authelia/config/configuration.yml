@@ -1,0 +1,62 @@
+##############################################################################
+#                   Authelia configuration  thehomelab.wiki                  #
+##############################################################################
+
+host: 0.0.0.0
+port: 9091
+log_level: info
+jwt_secret: A4gYb7QFpbfKaNWAX7P7FX5y
+default_redirection_url: https://auth.vm-app.app.local
+totp:
+  issuer: vm-app.app.local
+  period: 30
+  skew: 1
+
+authentication_backend:
+  disable_reset_password: false
+  file:
+    path: /config/users_database.yml
+    password:
+      algorithm: argon2id
+      iterations: 1
+      salt_length: 16
+      parallelism: 8
+      memory: 64
+
+access_control:
+  default_policy: deny
+  rules:
+    # Rules applied to everyone
+    - domain:
+        - "auth.vm-app.app.local"
+        - "some-app-with-api.yourdomain.com"
+      policy: bypass
+    - domain: 
+        - "vm-app.app.local"
+      policy: one_factor
+         
+session:
+  name: authelia_session
+  secret: BEcQnvjxawGh4U9JgXBMXNVE
+  expiration: 3600
+  inactivity: 7200
+  domain: vm-app.app.local
+
+  redis:
+    host: authelia_redis_1
+    port: 6379
+
+regulation:
+  max_retries: 5
+  find_time: 2m
+  ban_time: 10m
+
+theme: dark   # options: dark, light
+
+storage:
+  local:
+    path: /config/db.sqlite3
+    
+notifier:
+  filesystem:
+    filename: /config/notification.txt
