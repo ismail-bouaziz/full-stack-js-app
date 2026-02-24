@@ -43,7 +43,7 @@ session:
   domain: vm-app.app.local
 
   redis:
-    host: authelia_redis_1
+    host: app-redis-1
     port: 6379
 
 regulation:

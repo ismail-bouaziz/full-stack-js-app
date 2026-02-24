@@ -42,7 +42,7 @@ services:
     healthcheck:
       disable: true
     environment:
-      - TZ=America/Chicago
+      - TZ=Europe/Paris
     depends_on:
       - redis
 
