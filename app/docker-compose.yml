@@ -37,8 +37,6 @@ services:
     build:
       context: ./api-server
       target: dev
-      args:
-        API_PORT: ${API_PORT}
     env_file:
       - .env
     command: npm run start:dev
@@ -52,7 +50,6 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      PORT: $API_PORT
       NODE_ENV: development
   
   ui:
@@ -68,20 +65,7 @@ services:
     volumes:
       - ./blog-ui:/src:Z
       - /src/node_modules
-  
-  adminer:
-    image: docker.io/library/adminer:latest
-    restart: unless-stopped
-    networks:
-      - backend
-    ports:
-      - 8080:8080
-    depends_on:
-      - db
-    environment:
-      ADMINER_DEFAULT_SERVER: db
 
-  
 networks:
   frontend:
   backend:
