@@ -1,11 +1,12 @@
-FROM node:16-alpine
+FROM node:20-alpine
 
-WORKDIR /src
+WORKDIR /app
+
 COPY package*.json ./
-ARG CLIENT_PORT
-ENV PORT=${CLIENT_PORT}
-EXPOSE ${CLIENT_PORT}
+RUN npm install
 
-COPY ./ ./
-RUN npm i
+COPY . .
+
+EXPOSE 3000
+
 CMD ["npm", "run", "start"]

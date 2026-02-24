@@ -1,19 +1,16 @@
-FROM node:16-alpine as base
+# ---------- BASE ----------
+FROM node:20-alpine AS base
 
-WORKDIR /src
+WORKDIR /app
+
 COPY package*.json ./
-ARG API_PORT
-ENV PORT=${API_PORT}
-EXPOSE ${API_PORT}
+RUN npm install
 
-FROM base as production
-ENV NODE_ENV=production
-RUN npm ci
-COPY ./ ./
-CMD ["node", "app"]
+COPY . .
 
-FROM base as dev
-ENV NODE_ENV=development
-RUN npm install -g nodemon && npm install
-COPY ./ ./
+EXPOSE 5050
+
+# ---------- DEV ----------
+FROM base AS dev
+RUN npm install -g nodemon
 CMD ["nodemon", "app"]

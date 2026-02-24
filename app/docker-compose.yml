@@ -1,75 +1,90 @@
 version: '3.8'
 
-x-common-variables: &common-variables
-  MYSQL_DATABASE: $MYSQL_DATABASE
-  MYSQL_USER: $MYSQL_USER
-  MYSQL_PASSWORD: $MYSQL_PASSWORD
-
 services:
   db:
-    image: mysql
+    image: docker.io/library/mysql
     restart: always
+    networks:
+      - backend
     cap_add:
       - SYS_NICE
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./api-server/db-setup.sql:/docker-entrypoint-initdb.d/setup.sql
-    ports:
-      - "9906:3306"
+      - mysql_data:/var/lib/mysql:Z
+      - ./api-server/db-setup.sql:/docker-entrypoint-initdb.d/setup.sql:Z
     environment:
-      <<: *common-variables
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_HOST: $MYSQL_HOST
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   nginx:
     depends_on:
       - api
       - ui
     restart: always
+    networks:
+      - frontend
+      - backend
     build:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
-      - "8008:80"
+      - "80:80"
 
   api:
+    networks:
+      - backend
     build:
       context: ./api-server
       target: dev
+      args:
+        API_PORT: ${API_PORT}
+    env_file:
+      - .env
+    command: npm run start:dev
     depends_on:
       - db
     volumes:
-      - ./api-server:/src
+      - ./api-server:/src:Z
       - /src/node_modules
-    command: npm run start:dev
-    ports:
-      - $API_PORT:$API_PORT
     environment:
-      <<: *common-variables
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       PORT: $API_PORT
       NODE_ENV: development
   
   ui:
+    networks:
+      - frontend
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
     build:
       context: ./blog-ui
+      args:
+        CLIENT_PORT: ${CLIENT_PORT}
     volumes:
-      - ./blog-ui:/src
+      - ./blog-ui:/src:Z
       - /src/node_modules
-    ports:
-      - $CLIENT_PORT:$CLIENT_PORT
   
   adminer:
-    image: adminer:latest
+    image: docker.io/library/adminer:latest
     restart: unless-stopped
+    networks:
+      - backend
     ports:
       - 8080:8080
     depends_on:
       - db
     environment:
       ADMINER_DEFAULT_SERVER: db
+
+  
+networks:
+  frontend:
+  backend:
 
 volumes:
   mysql_data:
