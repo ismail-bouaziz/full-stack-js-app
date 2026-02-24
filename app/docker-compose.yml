@@ -35,7 +35,7 @@ services:
     networks:
       - frontend
     volumes:
-      - ./config:/config
+      - ./authelia/config:/config
     ports:
       - 9091:9091
     restart: unless-stopped
