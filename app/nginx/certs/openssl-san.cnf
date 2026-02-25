@@ -1,0 +1,21 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+req_extensions = req_ext
+
+[dn]
+C = FR
+ST = IDF
+L = Paris
+O = LocalDev
+OU = Dev
+CN = vm-app.app.local
+
+[req_ext]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = vm-app.app.local
+DNS.2 = auth.vm-app.app.local
