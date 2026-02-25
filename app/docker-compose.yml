@@ -37,8 +37,6 @@ services:
       - frontend
     volumes:
       - ./authelia/config:/config:Z
-    ports:
-      - 9091:9091
     restart: unless-stopped
     healthcheck:
       disable: true
