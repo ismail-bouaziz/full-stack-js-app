@@ -32,55 +32,36 @@ Full-stack JavaScript application containerized with Docker / Podman Compose and
 | **API** | Backend REST service | 5050 (internal) | backend |
 | **MySQL** | Database | 3306 (internal) | backend |
 
----
-
 ## Networks
 
-### frontend network
-
-Contains:
+**frontend**
 - Nginx
 - Authelia
 - Redis
 - UI
 
-Handles:
-- HTTPS traffic
-- Authentication
-- Session management
-
----
-
-### backend network
-
-Contains:
+**backend**
 - Nginx
 - API
 - MySQL
 
-Handles:
-- Business logic
-- Database access
+---
+
+## Request Flow
+
+Client → Nginx (443)
+→ Authelia (9091) → Redis (6379)
+→ UI (3000)
+→ API (5050)
+→ MySQL (3306)
+
 
 ---
 
-## Security Model
+## Security
 
-- HTTPS enforced (port 443)
-- HTTP automatically redirected to HTTPS
-- Authentication required before accessing:
-  - UI
-  - API
-- Database is not exposed externally
-- UI does NOT communicate directly with MySQL
+- HTTPS enforced
+- Authentication required (UI + API)
+- UI does NOT access MySQL directly
 - Only API communicates with MySQL
-- Network isolation enforced via frontend/backend separation
-
----
-
-## Network Isolation Summary
-
-- Database is only reachable from the backend network
-- UI has no direct access to MySQL
-- Redis is only used by Authelia
-- Nginx is the only public entry point
+- Database not exposed externally
