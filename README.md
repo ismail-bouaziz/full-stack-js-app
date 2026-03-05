@@ -66,7 +66,7 @@ Services running on VM2:
 ![Architecture Diagram](docs/archi_app.png)
 
 ### Observability Architecture
-![Observability Architecture](docs/images/monitoring-architecture.png)
+![Observability Architecture](docs/monitoring-architecture.png)
 
 ---
 ## Deployment
